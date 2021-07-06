@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <style id="animation" type="text/css">
+        body {
+            -webkit-app-region: drag;
+            /* アニメーション */
+        }
+    </style>
+    <!-- <title>electron chat</title> -->
+    <link rel="stylesheet" href="lightDarkChange.css">
+    <script type="module">
+        const $ = require('jQuery');
+        console.log($);
+    </script>
+    <script type="text/javascript">
+        require('./changeControl');
+
+        var count = 0;
+        var before = 'rgba(0,0,0,0)';
+    </script>
+</head>
+
+<body id="hoge">
+</body>
+
+</html>

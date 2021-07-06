@@ -1,0 +1,66 @@
+<style>
+    body {
+        margin: 0;
+    }
+    .full-screen {
+        width: 100vw;
+        height: 100vh;
+    }
+    .content {
+        background-image: url("https://image.slidesharecdn.com/how-to-present-better-remaked-141109130915-conversion-gate01/95/-1-638.jpg?cb=1457004823");
+        background-size: contain;
+    }
+    .slider {
+        top: 20px;
+        left: 20px;
+        position: fixed;
+        width: 300px;
+        padding: 20px;
+        border-radius: 50px;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+    }
+    .slider > input {
+        width: 200px;
+    }
+    .slider > span {
+        margin-left: 20px;
+    }
+</style>
+​
+<body>
+    <div id="content" class="full-screen content">
+        <div id="cover" class="full-screen">
+            <div class="slider">
+                <input id="slider" type="range" id="range" max="100" min="0" step="10" value="100">
+                <span id="value">100</span>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>  
+    <script>
+        $("#slider").on("change", () => {
+            const value = $("#slider").val();
+            $("#value").text(value);
+            alphaChange(value);
+        })
+​
+        const alphaChange = (value) => {
+            const opacity = -Math.log10(value / 100);
+            if (opacity > 1) opacity = 1;
+            const color = `rgba(0, 0, 0, ${opacity})`;
+​
+            console.log(color);
+​
+            $("#cover").animate(
+                {
+                backgroundColor: color,
+                },
+                2000
+            );
+        }
+    </script>
+</body>

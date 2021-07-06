@@ -1,0 +1,16 @@
+.op_button {
+    width: 200px;
+    height: 100px;
+    font-size: 1.4em;
+    font-weight: bold;
+    padding: 10px 30px;
+    border-style: none;
+    background-color: black;
+    color: white;
+    opacity: 0.2;
+}
+
+.op_button:hover {
+    background-color: blue;
+    opacity: 1;
+}
