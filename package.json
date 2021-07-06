@@ -19,12 +19,16 @@
   "devDependencies": {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "electron": "^13.1.4"
   },
   "dependencies": {
     "bootstrap": "^5.0.0-beta3",
     "jquery": "^3.6.0",
     "mysql": "^2.18.1"
+=======
+    "electron": "^13.1.5"
+>>>>>>> 0cdffb59c61a23c398e03818e88cd2820813cd7f
 =======
     "electron": "^13.1.5"
 >>>>>>> 0cdffb59c61a23c398e03818e88cd2820813cd7f
