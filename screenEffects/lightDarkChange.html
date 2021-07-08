@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="lightDarkChange.css">
     <style id="animation" type="text/css">
         body {
             -webkit-app-region: drag;
@@ -10,7 +11,7 @@
         }
     </style>
     <!-- <title>electron chat</title> -->
-    <link rel="stylesheet" href="lightDarkChange.css">
+    
     <script type="module">
         const $ = require('jQuery');
         console.log($);
@@ -23,7 +24,13 @@
     </script>
 </head>
 
-<body id="hoge">
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <div id="content" class="full-screen content">
+        <div id="cover" class="full-screen cover"></div>
+    </div>
 </body>
 
 </html>

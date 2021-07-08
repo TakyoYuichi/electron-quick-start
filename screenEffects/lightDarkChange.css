@@ -1,16 +1,16 @@
-.op_button {
-    width: 200px;
-    height: 100px;
-    font-size: 1.4em;
-    font-weight: bold;
-    padding: 10px 30px;
-    border-style: none;
-    background-color: black;
-    color: white;
-    opacity: 0.2;
-}
 
-.op_button:hover {
-    background-color: blue;
-    opacity: 1;
+body {
+    margin: 0;
+}
+.full-screen {
+    width: 100vw;
+    height: 100vh;
+}
+/* .content {
+    background-image: url("https://image.slidesharecdn.com/how-to-present-better-remaked-141109130915-conversion-gate01/95/-1-638.jpg?cb=1457004823");
+    background-size: contain;
+} */
+.cover {
+    background-color: black;
+    opacity: 0;
 }

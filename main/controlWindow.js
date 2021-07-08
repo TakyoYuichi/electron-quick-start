@@ -171,10 +171,12 @@ function getAttentionRatio(){
     }).then(function(data) {
         console.log("fugafuga",data);
         //win.webContents.send( 'AttentionRatio', data );
+        
         // テスト用
         var min = 0;
         var max = 100;
         var a = Math.floor( Math.random() * (max + 1 - min) ) + min ;
         win.webContents.send( 'AttentionRatio', a );
+        // -----
     });
 }
