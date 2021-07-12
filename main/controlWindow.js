@@ -64,6 +64,12 @@ lightDarkChange.addEventListener('click', function(event){
     createWindow('lightDarkChange');
 });
 
+const kirakira = document.getElementById('kirakira');
+kirakira.addEventListener('click', function(event){
+    console.log('kirakira');
+    createWindow('kirakira');
+});
+
 function createWindow(pathFileName){
     const pathFile = pathFileName + '.html';
     const modelPath = path.join('file://', __dirname, '../screenEffects/' ,pathFile);
@@ -98,10 +104,11 @@ function createWindow(pathFileName){
         console.log(width,height);
         win = new BrowserWindow({
             title: pathFileName,
-            width: width/2,
-            height: height/2,
-            //frame: false,
-            //transparent: true,
+            titleBarStyle: "hidden",
+            width: width,
+            height: height,
+            frame: false,
+            transparent: true,
             webPreferences: {
                 nodeIntegration: true,
                 contextIsolation: false,
@@ -115,18 +122,22 @@ function createWindow(pathFileName){
     // ワークスペース（デスクトップ）を移動しても表示される
     win.setVisibleOnAllWorkspaces(true);
     // 透明な部分のマウスのクリックを検知させない
-    //win.setIgnoreMouseEvents(true);
+    win.setIgnoreMouseEvents(true);
 
     win.on('close', function() {
         // サブウィンドウが消された時の処理
         gaugeButton.disabled = false;
         alphaChangeButton.disabled = false;
+        kirakira.disabled = false
+        controlButton.disabled = true;
+        controlButton.value = "スタート";
         win = null;
     });
     win.loadURL(modelPath);
     gaugeButton.disabled = true;
     alphaChangeButton.disabled = true;
-    //win.show();
+    kirakira.disabled = true;
+    controlButton.disabled = false;
 
     // deleteボタンに関するスクリプト
     const deleteButton = document.getElementById('delete-window');
@@ -177,6 +188,12 @@ function getAttentionRatio(){
         var max = 100;
         var a = Math.floor( Math.random() * (max + 1 - min) ) + min ;
         win.webContents.send( 'AttentionRatio', a );
+        viewAttentionRatio(a);
         // -----
+        
     });
+}
+
+function viewAttentionRatio(value) {
+    document.getElementById("attentionRatio").innerHTML = value;
 }
