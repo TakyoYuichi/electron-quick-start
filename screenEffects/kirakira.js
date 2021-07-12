@@ -1,15 +1,20 @@
 const $ = require('jquery');
 const ipcRenderer = require( 'electron' ).ipcRenderer;
 
-ipcRenderer.on( 'AttentionRatio' , ( ev, message ) => {});
+ipcRenderer.on( 'AttentionRatio' , ( ev, message ) => {
+    let starInterval;
+    starInterval = 1 / 4 * (message - 100) * (message - 100) + 1;
+    PARAM.stage = '';
+    console.log(starInterval);
+    $.canvas.init(starInterval);
+});
 
-(function(window){
-    window.addEventListener("load", function(e){$.canvas.init();}, false);
-})
+
 
 var PARAM = new Object();
 $.canvas = {
-    init : function(){
+    init : function(a){
+        console.log('set PARAM');
         PARAM = {
             main   : {id:$('#kirakira_arae')},
             canvas : {
@@ -18,8 +23,9 @@ $.canvas = {
             },
             velocity : {x:0, y:0},
             circle   : new Shape(),
-            stage    : ''
-        };		
+            stage    : '',
+            interval : a
+        };
         $.canvas.seting();
     },
     seting : function(){
@@ -29,10 +35,8 @@ $.canvas = {
         PARAM.stage = new Stage(canvasObject);
         PARAM.velocity.x = Math.floor(Math.random()*5) + 5;
         PARAM.velocity.y = Math.floor(Math.random()*5) + 5;
-
-        setInterval(function(){
-            $.canvas.star();
-        },1);
+        console.log('PARAM.interval', PARAM.interval);
+        setInterval(function(){ $.canvas.star(); }, PARAM.interval);
 
         Ticker.on("tick", $.canvas.tick);
     },
@@ -69,14 +73,8 @@ $.canvas = {
         .to({scaleX:1, scaleY:1, alpha:1}, 500, Ease.sineOut)
         .to({scaleX:0, scaleY:0, alpha:0, }, 800, Ease.sineIn)
         ;
-        tween.call(function(){
-            $.canvas.remove(this);
-        });
+        tween.call(function(){ $.canvas.remove(this); });
     },
-    remove : function(SHAPE){
-        PARAM.stage.removeChild(SHAPE);
-    },
-    tick : function(){
-        PARAM.stage.update();
-    },
+    remove : function(SHAPE){ PARAM.stage.removeChild(SHAPE); },
+    tick : function(){ PARAM.stage.update(); },
 };
