@@ -46,7 +46,7 @@ $.canvas = {
         var color      = (Math.random()*360);
         var glowColor1 = Graphics.getHSL(0, 100, 100, 1);
         var glowColor2 = Graphics.getHSL(color, 100, 75, 0.5);
-        var radius     = (Math.random()*15);
+        var radius     = (Math.random()*75); // 半径
         var position   = {x:Math.random()*PARAM.canvas.size.width, y :Math.random()*PARAM.canvas.size.height};
 
         g.beginRadialGradientFill( [glowColor1,glowColor2], [0.1,0.5], 0,0,1, 0,0,(Math.random()*10+13)*2);
