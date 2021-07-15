@@ -71,7 +71,7 @@ kirakira.addEventListener('click', function(event){
 });
 
 const party = document.getElementById('partyPallot');
-kirakira.addEventListener('click', function(event){
+party.addEventListener('click', function(event){
     console.log('partyPallot');
     createWindow('partyPallot');
 });
@@ -131,19 +131,13 @@ function createWindow(pathFileName){
     win.setIgnoreMouseEvents(true);
 
     win.on('close', function() {
-        // サブウィンドウが消された時の処理
-        gaugeButton.disabled = false;
-        alphaChangeButton.disabled = false;
-        kirakira.disabled = false
-        controlButton.disabled = true;
+        disabledChange();
         controlButton.value = "スタート";
+        stopTimer();
         win = null;
     });
     win.loadURL(modelPath);
-    gaugeButton.disabled = true;
-    alphaChangeButton.disabled = true;
-    kirakira.disabled = true;
-    controlButton.disabled = false;
+    disabledChange();
 
     // deleteボタンに関するスクリプト
     const deleteButton = document.getElementById('delete-window');
@@ -202,4 +196,22 @@ function getAttentionRatio(){
 
 function viewAttentionRatio(value) {
     document.getElementById("attentionRatio").innerHTML = value;
+}
+
+// サブウィンドウが作成・削除の処理時のボタン制御
+function disabledChange(){
+    if(controlButton.disabled == true){
+        gaugeButton.disabled = true;
+        alphaChangeButton.disabled = true;
+        kirakira.disabled = true;
+        party.disabled = true;
+        controlButton.disabled = false;
+    } else {
+        gaugeButton.disabled = false;
+        alphaChangeButton.disabled = false;
+        kirakira.disabled = false;
+        party.disabled = false;
+        controlButton.disabled = true;
+    }
+    
 }

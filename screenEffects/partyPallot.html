@@ -14,31 +14,27 @@
                 font-weight: inherit;
                 font-size: 1em;
             }
-            
-            body {
-                background-color: #3D3E6F;
-            }
-            
-            .center {
+
+            .pallot {
                 position: absolute;
-                top: 50%;
-                left: 50%;
+                bottom: 0%;
+                left: 5%;
                 transform: translate(-50%, -50%);
-                width: 512px;
-                height: 512px;
+                width: 10%;
+                height: 10%;
             }
-            
+/*             
             #animationDuration {
                 width: 50%;
                 display:block;
                 margin: 2em auto;
                 direction: rtl;
-            }
+            } */
         </style>
     </head>
     
     <body>
-        <div class="center">
+        <div class="pallot">
             <svg x="0px" y="0px" viewBox="0 0 128 128" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                 <path id="body">
                     <animate attributeName="fill" dur="500ms" repeatCount="indefinite" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" values="
@@ -92,7 +88,7 @@
                     <animate attributeName="cy" dur="500ms" repeatCount="indefinite" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" values="62;56;59;65;67;73;76;81;74;70;62"/>
                 </ellipse>
             </svg>
-            <input type="range" min="0" max="100" value="100" step="5" id="animationDuration" onchange="updateDuration(this.value)" oninput="updateDuration(this.value)">
+            <!-- <input type="range" min="0" max="100" value="100" step="5" id="animationDuration" onchange="updateDuration(this.value)" oninput="updateDuration(this.value)"> -->
         </div>
         <script>
             const $ = require('jquery');
@@ -106,7 +102,7 @@
 
             function updateDuration(val) {
 
-                var newVal = (Math.abs(val)-100)*(Math.abs(val)-100)+500 + 'ms';
+                var newVal = (Math.abs(val)-100)*(Math.abs(val)-100)+100 + 'ms';
                 console.log(newVal);
                 Array.prototype.forEach.call(elements, function(el, i){
                     el.setAttribute('dur',newVal);
