@@ -7,8 +7,8 @@ app.on('ready', function() {
   console.log(width,height);
   mainWindow = new BrowserWindow({ 
     title: "slipeManager",
-    width: width/2,
-    height: height/2,
+    width: width/3*2,
+    height: height/3*2,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
