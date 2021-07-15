@@ -70,6 +70,12 @@ kirakira.addEventListener('click', function(event){
     createWindow('kirakira');
 });
 
+const party = document.getElementById('partyPallot');
+kirakira.addEventListener('click', function(event){
+    console.log('partyPallot');
+    createWindow('partyPallot');
+});
+
 function createWindow(pathFileName){
     const pathFile = pathFileName + '.html';
     const modelPath = path.join('file://', __dirname, '../screenEffects/' ,pathFile);
