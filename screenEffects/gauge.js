@@ -21,6 +21,7 @@ ipcRenderer.on( 'AttentionRatio', ( ev, message ) => {
     }];
     createChart(chartdata);
 })
+
 function createChart(chartdata){
     let chart = AmCharts.makeChart("chartdiv", {
         //グラフのパラメータうんたらかんたら

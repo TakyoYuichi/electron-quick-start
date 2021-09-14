@@ -18,7 +18,6 @@ let win;
 const gaugeButton = document.getElementById('hoge');
 const alphaChangeButton = document.getElementById('lightDarkChange');
 
-
 // スタートストップの処理
 const controlButton = document.getElementById('clickThroughElement');
 controlButton.addEventListener('click', function(Button){
@@ -154,6 +153,7 @@ function startTimer() {
     getAttentionRatio();
     timerId = setInterval(function() {
         getAttentionRatio();
+        console.log("aaaa");
     }, 5000);
 }
 
@@ -161,6 +161,9 @@ function stopTimer() {
     clearInterval(timerId);
     console.log('timerStop');
 }
+
+var index = [100, 80, 60, 40];
+var indexNum = 0;
 
 function getAttentionRatio(){
     return new Promise(function(resolve){
@@ -181,14 +184,29 @@ function getAttentionRatio(){
         connection.end();
     }).then(function(data) {
         console.log("fugafuga",data);
-        //win.webContents.send( 'AttentionRatio', data );
+        // win.webContents.send( 'AttentionRatio', data );
+        // viewAttentionRatio(data);
         
         // テスト用
-        var min = 0;
-        var max = 100;
-        var a = Math.floor( Math.random() * (max + 1 - min) ) + min ;
+        // var min = 0;
+        // var max = 100;
+        // var a = Math.floor( Math.random() * (max + 1 - min) ) + min ;
+        // win.webContents.send( 'AttentionRatio', a );
+        // viewAttentionRatio(a);
+        // -----
+
+        // テスト用
+
+        var a = index[indexNum] ;
+        indexNum++;
+        if(indexNum >= index.length){
+            indexNum = 0;
+        }
+        console.log(a);
+        console.log(indexNum);
         win.webContents.send( 'AttentionRatio', a );
         viewAttentionRatio(a);
+        
         // -----
         
     });

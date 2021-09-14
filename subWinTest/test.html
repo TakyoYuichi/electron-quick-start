@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0px;
+            padding: 0px;
+            position: relative;
+        }
+
+        #wrapper{
+            width: 100%;
+            height: 100%;
+            position: fixed;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <canvas id="canvas"></canvas>
+    </div>
+    <script>
+        var canvas = document.getElementById('canvas'),
+            ctx = canvas.getContext('2d'),
+            wrapper = document.getElementById('wrapper'),
+            centerX = wrapper.clientWidth / 2, centerY = wrapper.clientHeight / 2;
+
+        window.onload = function () {
+            // Canvasフルスクリーン表示
+            canvas.setAttribute('width', wrapper.clientWidth);
+            canvas.setAttribute('height', wrapper.clientHeight);
+            center   = {
+                x: canvas.width / 2,
+                y: canvas.height / 2
+            };
+            let lineNum = Math.floor( Math.random() * 100 );
+            drawVerticalLine(lineNum);
+            
+        }
+
+        function drawVerticalLine(num){
+            let x = 0 // Math.floor( Math.random() * wrapper.clientWidth );
+            let y = Math.floor( Math.random() * wrapper.clientHeight );
+            console.log(wrapper.clientHeight);
+            console.log(num);
+            const distance = wrapper.clientWidth / num;
+            for (let index = 0; index < num; index++) {
+                linePut = distance * index;
+                console.log(linePut);
+                ctx.beginPath();
+                ctx.moveTo(linePut, 0);
+                ctx.lineTo(linePut, y);
+                ctx.closePath();
+                ctx.stroke();
+            }
+            
+        }
+
+    </script>
+</body>
+</html>
