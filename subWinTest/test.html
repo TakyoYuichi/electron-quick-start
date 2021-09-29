@@ -4,62 +4,69 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../screenEffects/granim.js"></script>
     <title>Document</title>
     <style>
-        body{
-            margin: 0px;
-            padding: 0px;
-            position: relative;
+        *{
+            margin: 0;
+            padding: 0;
         }
-
-        #wrapper{
+        #canvas{
+            display: block;
+        }
+        html, body, #wrapper{
             width: 100%;
             height: 100%;
-            position: fixed;
         }
     </style>
 </head>
 <body>
     <div id="wrapper">
-        <canvas id="canvas"></canvas>
+        <canvas id="canvas" width="" height=""></canvas>
     </div>
     <script>
-        var canvas = document.getElementById('canvas'),
-            ctx = canvas.getContext('2d'),
-            wrapper = document.getElementById('wrapper'),
-            centerX = wrapper.clientWidth / 2, centerY = wrapper.clientHeight / 2;
+        var wrapper = null;				// キャンバスの親要素
+        var canvas = null;					// キャンバス
+        var $id = function(id){ return document.getElementById(id); };	// DOM取得用
+        function getSize(){
+            // キャンバスのサイズを再設定
+            canvas.width = wrapper.offsetWidth;
+            canvas.height =  wrapper.offsetHeight;
+            console.log(canvas.width, canvas.height);
+        }
+        window.addEventListener("load", function(){
+            // キャンバスの親要素情報取得（親要素が無いとキャンバスのサイズが画面いっぱいに表示できないため）
+            wrapper = $id("wrapper");
+            // キャンバス情報取得
+            canvas = $id("canvas");
 
-        window.onload = function () {
-            // Canvasフルスクリーン表示
-            canvas.setAttribute('width', wrapper.clientWidth);
-            canvas.setAttribute('height', wrapper.clientHeight);
-            center   = {
-                x: canvas.width / 2,
-                y: canvas.height / 2
-            };
-            let lineNum = Math.floor( Math.random() * 100 );
-            drawVerticalLine(lineNum);
-            
+            // キャンバスをウインドウサイズにする
+            getSize();
+
+            var granimInstance = new Granim({
+                element: '#canvas',
+                direction: 'radial',
+                isPausedWhenNotInView: false,
+                states : {
+                    "default-state": {
+                        gradients: [
+                            ['hsla(360, 100%, 90%, .7)', 'hsla(0, 0%, 50%, 1)', 'hsla(0, 0%, 50%, 1)'],
+                            ['hsla(240, 100%, 90%, .7)', 'hsla(0, 0%, 50%, 1)', 'hsla(0, 0%, 50%, 1)']
+                        ],
+                        transitionSpeed: 5000,
+                        loop: false,
+                    }
+                }
+            });
+        });
+
+        function rgb2hex (rgb) {
+            return '#' + rgb.map( function (value) {
+                return ('0' + value.toString(16)).slice(-2);
+            } ).join("");
         }
 
-        function drawVerticalLine(num){
-            let x = 0 // Math.floor( Math.random() * wrapper.clientWidth );
-            let y = Math.floor( Math.random() * wrapper.clientHeight );
-            console.log(wrapper.clientHeight);
-            console.log(num);
-            const distance = wrapper.clientWidth / num;
-            for (let index = 0; index < num; index++) {
-                linePut = distance * index;
-                console.log(linePut);
-                ctx.beginPath();
-                ctx.moveTo(linePut, 0);
-                ctx.lineTo(linePut, y);
-                ctx.closePath();
-                ctx.stroke();
-            }
-            
-        }
-
+        console.log(rgb2hex( [255, 255, 255] ));
     </script>
 </body>
 </html>

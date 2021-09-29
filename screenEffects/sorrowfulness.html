@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="lightDarkChange.css">
+        <script src="./granim.js"></script>
+        <script type="module">
+            // const $ = require('jQuery');
+            console.log($);
+        </script>
+        <script type="text/javascript">
+            // require('./lightDarkChange');
+        </script>
+        <style>
+            *{
+                margin: 0;
+                padding: 0;
+            }
+            #canvas{
+                display: block;
+            }
+            html, body, #wrapper{
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="wrapper" width="1920" height="1080">
+            <canvas id="myCanvas" width="1920" height="1080"></canvas>
+        </div>
+        <script>
+            var wrapper = null;				// キャンバスの親要素
+            var canvas = null;					// キャンバス
+            var $id = function(id){ return document.getElementById(id); };	// DOM取得用
+            function getSize(){
+                // キャンバスのサイズを再設定
+                canvas.width = wrapper.offsetWidth;
+                canvas.height =  wrapper.offsetHeight;
+            }
+            window.addEventListener("load", function(){
+                // キャンバスの親要素情報取得（親要素が無いとキャンバスのサイズが画面いっぱいに表示できないため）
+                wrapper = $id("wrapper");
+                // キャンバス情報取得
+                canvas = $id("myCanvas");
+                g = canvas.getContext("2d");
+
+                // キャンバスをウインドウサイズにする
+                getSize();
+            });
+            const $ = require('jquery');
+            const ipcRenderer = require( 'electron' ).ipcRenderer;
+            // 変数定義
+            var cs       = document.getElementById('myCanvas'),
+                ctx      = cs.getContext('2d'),
+                csWidth  =  cs.width
+                csHeight = cs.height,
+                center   = {
+                    x: csWidth / 2,
+                    y: csHeight / 2
+                };
+
+            // 線の基本スタイル
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 3;
+
+            // 縦線を引く
+            var drawVerticalLineAnim = function(linePos) {
+                var beginPos = 0,
+                    movePos  = beginPos,
+                    addVal   = 3,
+                    endPos   = Math.floor( Math.random() * (csHeight / 3)),
+                    isAnim   = function() {
+                        return (movePos < endPos);
+                    };
+
+                var render = function() {
+                    ctx.beginPath();
+                    ctx.moveTo(linePos, beginPos);
+                    ctx.lineTo(linePos, movePos);
+                    ctx.closePath();
+                    ctx.stroke();
+
+                    // 描画を繰り返す条件
+                    if (isAnim() === true) {
+                    movePos += addVal;
+                    // ↑のaddで終了点を超えることがあるため上限を決める
+                    movePos = (isAnim() === false) ? endPos : movePos;
+                    requestAnimationFrame(render)
+                    }
+                };
+
+            render();
+
+            };
+
+            let beforeHue = 120;
+
+            ipcRenderer.on( 'AttentionRatio' , ( ev, message ) => {
+                ctx.clearRect(0, 0, csWidth, csHeight);
+                console.log(message);
+                
+                let hue;
+
+                hue = 120 / 100 * message; // red 2 green
+                // hue = -120 / 100 * message + 360; // red 2 blue
+
+                console.log("hue",hue);
+                var granimInstance = new Granim({
+                    element: '#myCanvas',
+                    direction: 'radial',
+                    isPausedWhenNotInView: false,
+                    states : {
+                        "default-state": {
+                            gradients: [
+                                ['hsla(' + parseInt(beforeHue) + ', 100%, 50%, .5)', 'hsla(0, 0%, 100%, 0)', 'hsla(0, 0%, 100%, 0)'],
+                                ['hsla(' + parseInt(hue) + ', 100%, 50%, .5)', 'hsla(0, 0%, 100%, 0)', 'hsla(0, 0%, 100%, 0)']
+                            ],
+                            transitionSpeed: 2000,
+                            loop: false,
+                        }
+                    }
+                });
+
+                beforeHue = hue;
+
+                // //線形グラデーションを指定する
+                // let blue = 127 * (100 - message) / 100;
+                // let green = 255 * message / 100;
+                // var gradient = ctx.createLinearGradient(0,0,0,csHeight/3);
+                // //赤→緑→青となるように、グラデーション色を３つ追加する
+                // gradient.addColorStop(0.0 , 'rgba(0,' + green + ',' + blue + ', 0.5)');
+                // gradient.addColorStop(1.0 , 'rgba(0,' + green + ',' + blue + ', 0)');
+                // //上で指定したグラデーション内容を塗りつぶしスタイルに代入する
+                // ctx.fillStyle = gradient;
+                // //現在のパスを塗りつぶす
+                // ctx.fillRect(0,0,csWidth,csHeight/3);
+                
+            });
+            
+
+        </script>
+    </body>
+
+</html>

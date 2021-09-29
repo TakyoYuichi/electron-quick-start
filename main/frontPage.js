@@ -75,6 +75,12 @@ party.addEventListener('click', function(event){
     createWindow('partyPallot');
 });
 
+const sorrow = document.getElementById('sorrow');
+sorrow.addEventListener('click', function(event){
+    console.log('sorrow');
+    createWindow('sorrowfulness');
+});
+
 function createWindow(pathFileName){
     const pathFile = pathFileName + '.html';
     const modelPath = path.join('file://', __dirname, '../screenEffects/' ,pathFile);
@@ -112,7 +118,7 @@ function createWindow(pathFileName){
             titleBarStyle: "hidden",
             width: width,
             height: height,
-            frame: false,
+            //frame: false,
             transparent: true,
             webPreferences: {
                 nodeIntegration: true,
@@ -123,11 +129,11 @@ function createWindow(pathFileName){
     }
 
     
-    win.setAlwaysOnTop(true, "screen-saver");
+   // win.setAlwaysOnTop(true, "screen-saver");
     // ワークスペース（デスクトップ）を移動しても表示される
     win.setVisibleOnAllWorkspaces(true);
     // 透明な部分のマウスのクリックを検知させない
-    win.setIgnoreMouseEvents(true);
+   // win.setIgnoreMouseEvents(true);
 
     win.on('close', function() {
         disabledChange();
@@ -154,7 +160,7 @@ function startTimer() {
     timerId = setInterval(function() {
         getAttentionRatio();
         console.log("aaaa");
-    }, 5000);
+    }, 3000);//実験よう    //5000);システムよう 
 }
 
 function stopTimer() {
@@ -162,7 +168,7 @@ function stopTimer() {
     console.log('timerStop');
 }
 
-var index = [100, 80, 60, 40];
+var index = [100, 80, 60, 40, 20, 0];
 var indexNum = 0;
 
 function getAttentionRatio(){
@@ -187,7 +193,7 @@ function getAttentionRatio(){
         // win.webContents.send( 'AttentionRatio', data );
         // viewAttentionRatio(data);
         
-        // テスト用
+        //テスト用
         // var min = 0;
         // var max = 100;
         // var a = Math.floor( Math.random() * (max + 1 - min) ) + min ;
@@ -223,12 +229,14 @@ function disabledChange(){
         alphaChangeButton.disabled = true;
         kirakira.disabled = true;
         party.disabled = true;
+        sorrow.disabled = true;
         controlButton.disabled = false;
     } else {
         gaugeButton.disabled = false;
         alphaChangeButton.disabled = false;
         kirakira.disabled = false;
         party.disabled = false;
+        sorrow.disabled = false;
         controlButton.disabled = true;
     }
     
