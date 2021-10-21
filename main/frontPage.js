@@ -81,6 +81,12 @@ sorrow.addEventListener('click', function(event){
     createWindow('sorrowfulness');
 });
 
+const air = document.getElementById('airPlain');
+air.addEventListener('click', function(event){
+    console.log('air');
+    createWindow('airPlane');
+});
+
 function createWindow(pathFileName){
     const pathFile = pathFileName + '.html';
     const modelPath = path.join('file://', __dirname, '../screenEffects/' ,pathFile);
@@ -101,6 +107,7 @@ function createWindow(pathFileName){
             y: externalDisplay.bounds.y,
             width: externalDisplay.size.width,
             height: externalDisplay.size.height,
+            hasShadow: false,
             frame: false,
             transparent: true,
             webPreferences: {
@@ -118,6 +125,7 @@ function createWindow(pathFileName){
             titleBarStyle: "hidden",
             width: width,
             height: height,
+            hasShadow: false,
             //frame: false,
             transparent: true,
             webPreferences: {
@@ -129,11 +137,11 @@ function createWindow(pathFileName){
     }
 
     
-   // win.setAlwaysOnTop(true, "screen-saver");
+    win.setAlwaysOnTop(true, "screen-saver");
     // ワークスペース（デスクトップ）を移動しても表示される
     win.setVisibleOnAllWorkspaces(true);
     // 透明な部分のマウスのクリックを検知させない
-   // win.setIgnoreMouseEvents(true);
+    win.setIgnoreMouseEvents(true);
 
     win.on('close', function() {
         disabledChange();
@@ -160,7 +168,7 @@ function startTimer() {
     timerId = setInterval(function() {
         getAttentionRatio();
         console.log("aaaa");
-    }, 3000);//実験よう    //5000);システムよう 
+    }, 5000);//実験よう    //5000);システムよう 
 }
 
 function stopTimer() {
@@ -194,24 +202,25 @@ function getAttentionRatio(){
         // viewAttentionRatio(data);
         
         //テスト用
-        // var min = 0;
-        // var max = 100;
-        // var a = Math.floor( Math.random() * (max + 1 - min) ) + min ;
-        // win.webContents.send( 'AttentionRatio', a );
-        // viewAttentionRatio(a);
+        var min = 0;
+        var max = 100;
+        var a = Math.floor( Math.random() * (max + 1 - min) ) + min ;
+        win.webContents.send( 'AttentionRatio', a );
+        viewAttentionRatio(a);
+        
         // -----
 
         // テスト用
 
-        var a = index[indexNum] ;
-        indexNum++;
-        if(indexNum >= index.length){
-            indexNum = 0;
-        }
-        console.log(a);
-        console.log(indexNum);
-        win.webContents.send( 'AttentionRatio', a );
-        viewAttentionRatio(a);
+        // var a = index[indexNum] ;
+        // indexNum++;
+        // if(indexNum >= index.length){
+        //     indexNum = 0;
+        // }
+        // console.log(a);
+        // console.log(indexNum);
+        // win.webContents.send( 'AttentionRatio', a );
+        // viewAttentionRatio(a);
         
         // -----
         

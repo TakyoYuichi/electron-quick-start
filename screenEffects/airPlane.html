@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>sample</title>
+        <style>
+            .airPlain{
+                position: absolute; 
+                right: 5%; 
+                top: 0px;
+                object-fit: contain;
+                width: 50px;
+                height: 50px;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <script src="./anime-master/lib/anime.min.js"></script>
+        <div class="wrapper">
+            <div>
+                <img src="./airplane.png" id="elem" class="airPlain">
+            </div>
+        <script>
+            const $ = require('jquery');
+            const ipcRenderer = require( 'electron' ).ipcRenderer;
+            let canvas = document.getElementById("sineCanvas");
+
+            // 概要：アークタンジェントを用いて角度を求める
+            function calcAngleDegrees(x, y) {
+                return Math.atan2(y, x) * 180 / Math.PI;
+            }
+
+            let beforeAttentionRatio = 100;
+            let nowAttentionRatio;
+            let beforeDegrees = 0;
+            let nowDegrees;
+            const xIncrease = 50;
+
+            ipcRenderer.on( 'AttentionRatio', ( ev, mesage ) => {
+                nowAttentionRatio = mesage;
+                nowDegrees = calcAngleDegrees(xIncrease, nowAttentionRatio - beforeAttentionRatio);
+                anime({
+                    targets: elem,
+                    translateY: (document.documentElement.clientHeight - 50) / 100 * (100 - nowAttentionRatio),
+                    rotate: -nowDegrees,
+                    easing: 'linear',
+                    duration: 3000
+                })
+
+                beforeAttentionRatio = nowAttentionRatio;
+                beforeDegrees = nowDegrees;
+            });
+        </script>
+    </body>
+</html>

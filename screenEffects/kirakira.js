@@ -3,22 +3,50 @@ const ipcRenderer = require( 'electron' ).ipcRenderer;
 
 var PARAM = new Object();
 let timerId;
+let beforeHue = 60;
 ipcRenderer.on( 'AttentionRatio' , ( ev, message ) => {
     let starInterval;
-    starInterval = 0.25 * (message - 100) * (message - 100) + 1;
-    PARAM.stage = '';
-    clearInterval(timerId);
-    console.log(starInterval);
-    $.canvas.init(starInterval);
+    //starInterval = 0.25 * (message - 100) * (message - 100) + 1;
+
+    if (message > 50){
+        beforeHue = 60;
+        starInterval = -9 / 5 * message + 100;
+        PARAM.stage = '';
+        clearInterval(timerId);
+        $.canvas.init(starInterval);
+    } else {
+        PARAM.stage = '';
+        let hue;
+        hue = 120 / 100 * message; // red 2 green
+        // hue = -120 / 100 * message + 360; // red 2 blue
+        
+        console.log("hue",hue);
+        var granimInstance = new Granim({
+            element: '#myCanvas',
+            direction: 'radial',
+            isPausedWhenNotInView: false,
+            states : {
+                "default-state": {
+                    gradients: [
+                        ['hsla(' + parseInt(beforeHue) + ', 100%, 50%, .5)', 'hsla(0, 0%, 100%, 0)',  'hsla(0, 0%, 100%, 0)', 'hsla(0, 0%, 100%, 0)'],
+                        ['hsla(' + parseInt(hue) + ', 100%, 50%, .5)',       'hsla(0, 0%, 100%, 0)',  'hsla(0, 0%, 100%, 0)', 'hsla(0, 0%, 100%, 0)']
+                    ],
+                    transitionSpeed: 2000,
+                    loop: false,
+                }
+            }
+        });
+        beforeHue = hue;
+    }
 });
 
 $.canvas = {
     init : function(a){
         
         PARAM = {
-            main   : {id:$('#kirakira_arae')},
+            main   : {id:$('#wrapper')},
             canvas : {
-                id   : $('#kirakira_canvas'),
+                id   : $('#myCanvas'),
                 size : {width:1920, height:1080} // !!画像サイズと一致させる!!
             },
             velocity : {x:0, y:0},
@@ -31,7 +59,6 @@ $.canvas = {
     },
     seting : function(){
         var canvasObject = PARAM.canvas.id.get(0);
-        //var context      = canvasObject.getContext("2d");
 
         PARAM.stage = new Stage(canvasObject);
         PARAM.velocity.x = Math.floor(Math.random()*5) + 5;
@@ -48,16 +75,17 @@ $.canvas = {
         var radius     = (Math.random()*75); // 星の半径
         var position   = { x : Math.random() * PARAM.canvas.size.width, y : Math.random() * PARAM.canvas.size.height };
 
-        if(position.x > PARAM.canvas.size.width / 10 && position.x < PARAM.canvas.size.width * 9/10 && position.y > PARAM.canvas.size.height / 5 && position.y < PARAM.canvas.size.height * 4 / 5){
-            var glowColor1 = Graphics.getHSL(0, 100, 100, 0);
-            var glowColor2 = Graphics.getHSL(color, 100, 75, 0);
-            g.beginRadialGradientFill( [glowColor1,glowColor2], [0.1,0.5], 0,0,1, 0,0,(Math.random()*10+13)*2);
-            g.drawPolyStar(0, 0, radius, 5, 0.95, (Math.random()*360));
-            g.endFill();
+        if(position.x > PARAM.canvas.size.width / 15 && position.x < PARAM.canvas.size.width * 14 / 15 && position.y > PARAM.canvas.size.height / 10 && position.y < PARAM.canvas.size.height * 9 / 10){
+            // var glowColor1 = Graphics.getHSL(0, 100, 100, 1);
+            // var glowColor2 = Graphics.getHSL(color, 100, 75, 0.5);
 
-            g.beginRadialGradientFill( [Graphics.getHSL(color,100,75,0),Graphics.getHSL(color,100,75,0)], [0,0.5], 0,0,0, 0,0,radius);
-            g.drawCircle(0, 0, radius);
-            g.endFill();
+            // g.beginRadialGradientFill( [glowColor1,glowColor2], [0.1,0.5], 0,0,1, 0,0,(Math.random()*10+13)*2);
+            // g.drawPolyStar(0, 0, radius, 5, 0.95, (Math.random()*360));
+            // g.endFill();
+
+            // g.beginRadialGradientFill( [Graphics.getHSL(color,100,75,0),Graphics.getHSL(color,100,75,0)], [0,0.5], 0,0,0, 0,0,radius);
+            // g.drawCircle(0, 0, radius);
+            // g.endFill();
         } else {
             var glowColor1 = Graphics.getHSL(0, 100, 100, 1);
             var glowColor2 = Graphics.getHSL(color, 100, 75, 0.5);
@@ -66,7 +94,7 @@ $.canvas = {
             g.drawPolyStar(0, 0, radius, 5, 0.95, (Math.random()*360));
             g.endFill();
 
-            g.beginRadialGradientFill( [Graphics.getHSL(color,100,75,0.5),Graphics.getHSL(color,100,75,0)], [0,0.5], 0,0,0, 0,0,radius);
+            g.beginRadialGradientFill( [Graphics.getHSL(color,100,75,0),Graphics.getHSL(color,100,75,0)], [0,0.5], 0,0,0, 0,0,radius);
             g.drawCircle(0, 0, radius);
             g.endFill();
         }

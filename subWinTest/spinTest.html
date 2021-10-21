@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>sample</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    </head>
+    <body>
+        <div class="box"></div>
+        <img id="spin" src="./plean.png">
+        <input type="range" id="myslider" name="speed" min="0" max="100" value="50">
+        <p id="msg">注目率は 50％ です</p>
+        <canvas id="canvas" style="position: absolute; right: 0px; top: 0px"></canvas>
+        <script>
+            let canvas = document.getElementById("canvas");
+            let ctx = canvas.getContext("2d");
+            let charaData = new Image();
+            const TO_RADIANS = Math.PI/180;
+
+            function drawArea(){
+                // Canvas 全体を塗りつぶし
+                ctx.fillStyle = "rgb(0, 0, 0)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = "rgb(255, 255, 255)";
+                ctx.fillRect(10, 10, canvas.width - 20, canvas.height - 20);
+            }
+
+            function drawAnimation(startHeight, endHeight, startDegrees, endDegrees){
+                let moveRange = endHeight - startHeight;
+                let moveRangeAve = moveRange / 500;
+
+                let rotation = endDegrees - startDegrees;
+                let rotetionAve = rotation / 500;
+                let count = 0;
+                let timer = setInterval(function(){
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    let hoge = parseFloat(startHeight) + parseFloat(moveRangeAve * count);
+                    let fuga = parseFloat(startDegrees) + parseFloat(rotetionAve * count);
+                    console.log(fuga)
+                    airplaneMove(hoge, fuga);
+                    count++;
+                    if(count > 500){
+                        clearInterval(timer);
+                        count = 0;
+                    }
+                }, 10);
+            }
+
+            const drawRotatedImage = (image, x, y, angle) => {
+                // コンテキストを保存する
+                ctx.save();
+                // 回転の中心に原点を移動する
+                ctx.translate(x, y);
+                // canvasを回転する
+                ctx.rotate(angle * TO_RADIANS);
+                // 画像サイズの半分だけずらして画像を描画する
+                ctx.drawImage(image, -(image.width / 2), -(image.height / 2));
+                // コンテキストを元に戻す
+                ctx.restore();
+            }
+
+            // 概要：アークタンジェントを用いて角度を求める
+            function calcAngleDegrees(x, y) {
+                return Math.atan2(y, x) * 180 / Math.PI;
+            }
+
+            
+            function airplaneMove(height, degrees){
+                //ctx.clearRect(0, 0, canvas.width, canvas.height);
+                //drawArea();
+                charaData.src = "./plean.png";
+                charaData.onload = ()=>{
+                    drawRotatedImage(charaData, canvas.width / 2, (canvas.height - 10) / 100 * (100 - height), -degrees);
+                    //drawRotatedImage(charaData, canvas.width / 2, canvas.height / 2, -degrees);
+                };
+            }
+            
+            
+            window.onload = function(){
+                charaData.src = "./plean.png";
+
+                function fitCanvasSize(){
+                    canvas.width = document.documentElement.clientWidth/10;
+                    canvas.height = document.documentElement.clientHeight;
+                    //drawArea();
+                }
+
+                fitCanvasSize();
+                window.onresize = fitCanvasSize;
+
+                charaData.onload = ()=>{
+                    drawRotatedImage(charaData, canvas.width / 2, canvas.height / 2, 0);
+                };
+            }
+
+            let beforeAttentionRatio = 50;
+            let nowAttentionRatio;
+            let beforeDegrees = 0;
+            let nowDegrees;
+            const xIncrease = 50;
+
+            function sliderValue(){
+                nowAttentionRatio = element.value;
+                console.log("before", beforeAttentionRatio, "now", nowAttentionRatio);
+                nowDegrees = calcAngleDegrees(xIncrease, nowAttentionRatio - beforeAttentionRatio);
+                
+                msg.innerText = '注目率は ' + element.value + ' ％です. 角度は' + nowDegrees + "です．";
+
+                //airplaneMove(nowAttentionRatio, nowDegrees);
+                drawAnimation(beforeAttentionRatio, nowAttentionRatio, beforeDegrees, nowDegrees)
+                
+                beforeAttentionRatio = nowAttentionRatio; // before に 今回の注目率を保存
+                beforeDegrees = nowDegrees;
+            }
+            
+            let element = document.getElementById('myslider');
+            element.addEventListener('change', sliderValue);
+        </script>
+        
+    </body>
+</html>
