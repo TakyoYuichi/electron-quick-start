@@ -9,8 +9,8 @@
                 right: 5%; 
                 top: 0px;
                 object-fit: contain;
-                width: 50px;
-                height: 50px;
+                width: 100px;
+                height: 100px;
                 cursor: pointer;
             }
         </style>
@@ -18,25 +18,24 @@
     <body>
         <script src="./anime-master/lib/anime.min.js"></script>
         <div class="wrapper">
-            <div>
+            <div id="box">
                 <img src="./airplane.png" id="elem" class="airPlain">
             </div>
         <script>
             const $ = require('jquery');
             const ipcRenderer = require( 'electron' ).ipcRenderer;
             let canvas = document.getElementById("sineCanvas");
-
-            // 概要：アークタンジェントを用いて角度を求める
-            function calcAngleDegrees(x, y) {
-                return Math.atan2(y, x) * 180 / Math.PI;
-            }
-
             let beforeAttentionRatio = 100;
             let nowAttentionRatio;
             let beforeDegrees = 0;
             let nowDegrees;
             const xIncrease = 50;
 
+            // 概要：アークタンジェントを用いて角度を求める
+            function calcAngleDegrees(x, y) {
+                return Math.atan2(y, x) * 180 / Math.PI;
+            }
+            
             ipcRenderer.on( 'AttentionRatio', ( ev, mesage ) => {
                 nowAttentionRatio = mesage;
                 nowDegrees = calcAngleDegrees(xIncrease, nowAttentionRatio - beforeAttentionRatio);
