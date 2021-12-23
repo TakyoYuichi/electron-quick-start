@@ -176,7 +176,10 @@ function stopTimer() {
     console.log('timerStop');
 }
 
-var index = [100, 80, 60, 40, 20, 0];
+//var index = [100, 80, 60, 40, 20, 0];
+var index = [70, 70, 100, 90, 70, 50, 10, 20, 30, 70];
+// var index = [70, 50, 10, 20, 30, 70];
+
 var indexNum = 0;
 
 function getAttentionRatio(){
@@ -198,15 +201,15 @@ function getAttentionRatio(){
         connection.end();
     }).then(function(data) {
         console.log("fugafuga",data);
-        // win.webContents.send( 'AttentionRatio', data );
-        // viewAttentionRatio(data);
+        win.webContents.send( 'AttentionRatio', data );
+        viewAttentionRatio(data);
         
         //テスト用
-        var min = 0;
-        var max = 100;
-        var a = Math.floor( Math.random() * (max + 1 - min) ) + min ;
-        win.webContents.send( 'AttentionRatio', a );
-        viewAttentionRatio(a);
+        // var min = 0;
+        // var max = 100;
+        // var a = Math.floor( Math.random() * (max + 1 - min) ) + min ;
+        // win.webContents.send( 'AttentionRatio', a );
+        // viewAttentionRatio(a);
         
         // -----
 
